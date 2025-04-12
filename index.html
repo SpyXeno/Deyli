@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 1. Update title tag -->
+    <title>Deyli - Daily Fortune & Luck</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- Start CSS --- */
+
+        /* Basic Reset & Font */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --glow-color: rgba(255, 215, 0, 0.6);
+            --dark-blue: #0a0a23;
+            --mid-blue: #1a1a3f;
+            --light-blue: #2a2a5a;
+            --purple-hint: #4a2a5a;
+            --gold: #ffd700;
+            --light-gold: #f0c040;
+            --text-light: #e8e8e8;
+            --text-muted: #b8c8e0;
+            --text-lavender: #d0d0ff;
+        }
+
+        html {
+             scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-light);
+            background: linear-gradient(-45deg, var(--dark-blue), var(--mid-blue), var(--light-blue), var(--purple-hint), var(--gold));
+            background-size: 400% 400%;
+            animation: gradientShift 20s ease infinite;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            min-height: 100vh;
+            padding: 50px 20px 40px 20px; /* Adjusted top padding slightly */
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        header, main, footer {
+            width: 100%;
+            max-width: 550px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        header {
+            margin-bottom: 35px; /* Adjusted space below header */
+        }
+        header h1 {
+            font-size: 3.5em; /* Slightly larger for Deyli */
+            font-weight: 700;
+            margin-bottom: 5px; /* Reduced space before subtitle */
+            letter-spacing: 1.5px;
+            background: linear-gradient(145deg, var(--gold), var(--light-gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 3px 8px rgba(0, 0, 0, 0.7);
+        }
+
+        /* 4. Style the subtitle */
+        .subtitle {
+            font-size: 1.05em;
+            font-weight: 300;
+            color: var(--text-muted);
+            margin-bottom: 25px; /* Space below subtitle */
+            letter-spacing: 0.5px;
+        }
+
+        .current-date {
+            font-size: 1.3em; /* Adjusted size */
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .current-date strong {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        /* Main Content Styling */
+        main {
+             flex-grow: 1;
+             display: flex;
+             flex-direction: column;
+             align-items: center;
+             justify-content: center;
+             width: 100%;
+        }
+
+        #initial-view, #user-info-form, #fortune-display {
+             width: 100%;
+             padding: 20px 0;
+             display: flex;
+             flex-direction: column;
+             align-items: center;
+        }
+        #user-info-form { display: block; }
+
+
+        .tagline {
+            font-size: 1.15em;
+            color: var(--text-lavender);
+            margin-top: 10px; /* Add margin above tagline */
+            margin-bottom: 45px;
+            font-weight: 300;
+            line-height: 1.65;
+            padding: 0 15px;
+        }
+
+        /* Buttons */
+        .action-button, .secondary-button {
+            background: linear-gradient(135deg, var(--gold), var(--light-gold));
+            color: var(--dark-blue);
+            border: none;
+            padding: 16px 35px;
+            border-radius: 30px;
+            font-size: 1.15em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 18px rgba(255, 215, 0, 0.35);
+            display: inline-block;
+            margin-top: 30px;
+            text-decoration: none;
+        }
+
+        .action-button:hover, .secondary-button:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.5);
+            background: linear-gradient(135deg, var(--light-gold), var(--gold));
+        }
+        .action-button:active, .secondary-button:active {
+             transform: translateY(-1px) scale(1.01);
+             box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+        }
+
+        .secondary-button {
+            background: rgba(10, 10, 35, 0.4);
+            border: 2px solid var(--gold);
+            color: var(--gold);
+            box-shadow: none;
+            padding: 14px 33px;
+            backdrop-filter: blur(3px);
+             -webkit-backdrop-filter: blur(3px);
+        }
+
+         .secondary-button:hover {
+            background: rgba(255, 215, 0, 0.15);
+             box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+             transform: translateY(-3px) scale(1.02);
+        }
+         .secondary-button:active {
+             transform: translateY(-1px) scale(1.01);
+             box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+         }
+
+
+        /* Form Styling */
+        #user-info-form {
+            text-align: left;
+            width: 100%;
+            padding: 0 10px;
+            margin-top: 0;
+        }
+
+        #user-info-form h2 {
+             text-align: center;
+             color: var(--gold);
+             margin-bottom: 40px;
+             font-weight: 600;
+             font-size: 1.4em;
+        }
+
+        .form-group {
+            margin-bottom: 28px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 400;
+            color: var(--text-muted);
+            font-size: 1em;
+            padding-left: 5px;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="date"],
+        .form-group select {
+            width: 100%;
+            padding: 15px 18px;
+            border: 1px solid rgba(255, 215, 0, 0.4);
+            border-radius: 12px;
+            background-color: rgba(10, 10, 35, 0.7);
+            color: var(--text-light);
+            font-size: 1.05em;
+            font-family: 'Poppins', sans-serif;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group input[type="date"]:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--gold);
+            background-color: rgba(10, 10, 35, 0.85);
+            box-shadow: 0 0 12px var(--glow-color), inset 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(0.9) sepia(1) saturate(5) hue-rotate(30deg);
+            cursor: pointer; transform: scale(1.1); opacity: 0.8; transition: opacity 0.3s ease;
+        }
+        input[type="date"]:hover::-webkit-calendar-picker-indicator { opacity: 1; }
+        input[type="date"] { color-scheme: dark; }
+        input[type="date"]:required:invalid::-webkit-datetime-edit { color: #888; }
+
+        .form-group select {
+            appearance: none; -webkit-appearance: none; -moz-appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg fill="%23ffd700" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/><path fill="none" d="M0 0h24v24H0V0z"/></svg>');
+            background-repeat: no-repeat; background-position: right 18px center; background-size: 24px; cursor: pointer; padding-right: 50px;
+        }
+        select:required:invalid { color: #888; }
+        select option[value=""][disabled] { display: none; }
+        select option { background-color: var(--mid-blue); color: var(--text-light); }
+
+
+        /* Fortune Display */
+        #fortune-display {
+            padding: 20px 10px;
+             width: 100%;
+             margin-top: 0;
+        }
+
+        #fortune-display h2 {
+            color: var(--gold);
+            margin-bottom: 30px;
+            font-weight: 600;
+            font-size: 1.5em;
+        }
+
+        .fortune-card {
+            padding: 20px 10px;
+            margin-bottom: 30px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        #fortune-text {
+            font-size: 1.25em;
+            line-height: 1.7;
+            color: var(--text-lavender);
+            font-weight: 400;
+            font-style: italic;
+            margin-bottom: 35px;
+            max-width: 95%;
+        }
+
+        .fortune-details {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            max-width: 380px;
+            margin-top: 25px;
+            border-top: 1px solid rgba(255, 215, 0, 0.2);
+            padding-top: 35px;
+        }
+
+        .detail-item { text-align: center; }
+        .detail-item h3 {
+            font-size: 0.9em;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            font-weight: 600;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+        }
+        #lucky-number {
+            font-size: 2.1em;
+            color: var(--gold);
+            font-weight: 700;
+            text-shadow: 0 0 10px var(--glow-color);
+        }
+        #luck-meter { font-size: 1.9em; }
+        #luck-meter span {
+            color: var(--gold); letter-spacing: 4px; text-shadow: 0 0 8px var(--glow-color);
+        }
+        #luck-meter span .empty-star {
+             color: rgba(255, 215, 0, 0.3); text-shadow: none;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 40px;
+            padding-bottom: 20px;
+            font-size: 0.9em;
+            color: #a0a0c0;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+        footer:hover { opacity: 0.9; }
+
+        /* Utility Classes & Transitions */
+        .hidden {
+            opacity: 0; visibility: hidden; height: 0; overflow: hidden;
+            transform: translateY(10px) scale(0.98);
+            transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out, visibility 0s linear 0.4s, height 0.4s ease-in-out, padding 0.4s ease-in-out, margin 0.4s ease-in-out;
+            pointer-events: none;
+            padding-top: 0 !important; padding-bottom: 0 !important;
+            margin-top: 0 !important; margin-bottom: 0 !important;
+        }
+        .visible {
+            opacity: 1; visibility: visible; height: auto; overflow: visible;
+            transform: translateY(0) scale(1);
+            transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out, visibility 0s linear 0s, height 0s linear 0s, padding 0.4s ease-in-out, margin 0.4s ease-in-out;
+            pointer-events: auto;
+            padding: 20px 0;
+             margin-top: auto; /* Allow natural margin or specific overrides */
+             margin-bottom: auto;
+        }
+         #initial-view.visible, #fortune-display.visible { display: flex; }
+         #user-info-form.visible { display: block; padding: 20px 10px; }
+
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            body { padding: 40px 15px 30px 15px; }
+            header { margin-bottom: 30px; }
+            header h1 { font-size: 3em; } /* Adjust responsive H1 */
+            .subtitle { font-size: 1em; margin-bottom: 20px; } /* Adjust responsive subtitle */
+            .current-date { font-size: 1.2em; }
+
+            .tagline { font-size: 1.1em; margin-bottom: 35px; padding: 0 5px; margin-top: 5px; }
+            .action-button, .secondary-button { padding: 15px 30px; font-size: 1.1em; margin-top: 25px; }
+            .secondary-button { padding: 13px 28px; }
+
+             #user-info-form { padding: 0 5px; }
+             #user-info-form h2 { font-size: 1.3em; margin-bottom: 35px; }
+             .form-group { margin-bottom: 25px; }
+             .form-group label { font-size: 0.95em; }
+             .form-group input[type="text"],
+             .form-group input[type="date"],
+             .form-group select { padding: 14px 15px; font-size: 1em; }
+
+             #fortune-display { padding: 20px 5px; }
+             #fortune-display h2 { font-size: 1.4em; }
+             .fortune-card { padding: 15px 5px; margin-bottom: 25px; }
+             #fortune-text { font-size: 1.15em; margin-bottom: 30px;}
+             .fortune-details { flex-direction: column; align-items: center; gap: 25px; padding-top: 30px; margin-top: 20px; }
+             #lucky-number { font-size: 2em; }
+             #luck-meter { font-size: 1.8em; }
+             footer { font-size: 0.85em; margin-top: 30px;}
+        }
+
+         @media (max-width: 400px) {
+             body { padding: 30px 10px 20px 10px; }
+             header h1 { font-size: 2.6em; } /* Adjust smaller H1 */
+             .subtitle { font-size: 0.9em; } /* Adjust smaller subtitle */
+             .current-date { font-size: 1.1em; }
+             .tagline { font-size: 1em; line-height: 1.6; }
+             .action-button, .secondary-button { font-size: 1em; padding: 14px 25px;}
+             .secondary-button { padding: 12px 23px; }
+             #fortune-text { font-size: 1.1em; }
+             .form-group { margin-bottom: 22px; }
+         }
+
+        /* --- End CSS --- */
+    </style>
+</head>
+<body>
+    <header>
+        <!-- 2. Update main heading -->
+        <h1>Deyli</h1>
+        <!-- 3. Add subtitle element -->
+        <p class="subtitle">Your daily fortune and luck prediction</p>
+        <p class="current-date"><strong id="current-date">Loading Date...</strong></p>
+    </header>
+
+    <main>
+        <div id="initial-view" class="visible">
+            <p class="tagline">Peer into the celestial currents guiding your day. <br> What mysteries will the stars reveal for you?</p>
+            <button id="get-fortune-btn" class="action-button">Get Today's Fortune</button>
+        </div>
+
+        <form id="user-info-form" class="hidden">
+            <h2>Enter Your Cosmic Signature</h2>
+            <div class="form-group">
+                <label for="first-name">First Name:</label>
+                <input type="text" id="first-name" name="first-name" required>
+            </div>
+            <div class="form-group">
+                <label for="last-name">Last Name:</label>
+                <input type="text" id="last-name" name="last-name" required>
+            </div>
+            <div class="form-group">
+                <label for="dob">Date of Birth:</label>
+                <input type="date" id="dob" name="dob" required>
+            </div>
+            <div class="form-group">
+                <label for="gender">Gender:</label>
+                <select id="gender" name="gender" required>
+                    <option value="" disabled selected>Select...</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="non-binary">Non-binary</option>
+                    <option value="prefer-not-say">Prefer not to say</option>
+                </select>
+            </div>
+            <button type="submit" class="action-button">Reveal My Fortune!</button>
+        </form>
+
+        <div id="fortune-display" class="hidden" aria-live="polite">
+            <h2>Your Celestial Forecast:</h2>
+            <div class="fortune-card">
+                <p id="fortune-text">Your fortune awaits...</p>
+                <div class="fortune-details">
+                    <div class="detail-item">
+                        <h3>Lucky Number</h3>
+                        <p id="lucky-number">?</p>
+                    </div>
+                    <div class="detail-item">
+                        <h3>Luck Meter</h3>
+                        <p id="luck-meter"><span>☆☆☆☆☆</span></p>
+                    </div>
+                </div>
+            </div>
+            <button id="reset-btn" class="secondary-button">Consult the Stars Again</button>
+        </div>
+    </main>
+
+    <footer>
+        <!-- 5. Update footer text -->
+        <p>&copy; <span id="current-year"></span> Deyli - Celestial Oracle</p>
+    </footer>
+
+    <script>
+        /* --- Start JavaScript --- */
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- DOM Elements ---
+            const currentDateEl = document.getElementById('current-date');
+            const currentYearEl = document.getElementById('current-year');
+            const getFortuneBtn = document.getElementById('get-fortune-btn');
+            const initialView = document.getElementById('initial-view');
+            const userInfoForm = document.getElementById('user-info-form');
+            const fortuneDisplay = document.getElementById('fortune-display');
+            const fortuneTextEl = document.getElementById('fortune-text');
+            const luckyNumberEl = document.getElementById('lucky-number');
+            const luckMeterSpan = document.getElementById('luck-meter').querySelector('span');
+            const resetBtn = document.getElementById('reset-btn');
+            const firstNameInput = document.getElementById('first-name');
+            const dobInput = document.getElementById('dob');
+            const lastNameInput = document.getElementById('last-name');
+            const genderInput = document.getElementById('gender');
+
+            // --- Date Setup ---
+            const today = new Date();
+            const todayString = today.toDateString();
+            const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            currentDateEl.innerHTML = `<strong>${today.toLocaleDateString(undefined, dateOptions)}</strong>`;
+            currentYearEl.textContent = today.getFullYear();
+
+            // Set max date for DOB input dynamically
+            const minAge = 10;
+            const maxDate = new Date();
+            maxDate.setFullYear(maxDate.getFullYear() - minAge);
+            const yyyy = maxDate.getFullYear();
+            let mm = maxDate.getMonth() + 1;
+            let dd = maxDate.getDate();
+            if (dd < 10) dd = '0' + dd;
+            if (mm < 10) mm = '0' + mm;
+            const maxDateString = `${yyyy}-${mm}-${dd}`;
+             try {
+                 if (dobInput) dobInput.setAttribute("max", maxDateString);
+             } catch(e) { console.error("Error setting max date:", e); }
+
+            // --- Fortunes (Keep the same long list) ---
+            const fortunes = [ /* ... (Same long list of fortunes) ... */
+                "Cosmic currents favor bold moves today! An unexpected opportunity, possibly career-related, will emerge. Trust your instincts and seize it; the potential rewards are significant.",
+                "Your creative energies are amplified by the stars. Dive into artistic projects or find innovative solutions to problems. Collaboration could lead to something truly special.",
+                "A wave of clarity washes over you, illuminating a path forward regarding a personal dilemma. Communication is key; express your thoughts honestly for breakthroughs in relationships.",
+                "Good fortune smiles upon your social sphere. Reconnecting with old friends or making valuable new connections is highly likely. Embrace spontaneity and say 'yes' to invitations.",
+                "Financial prospects look bright, perhaps through an unexpected source or wise investment. However, balance optimism with prudence. Consider long-term security.",
+                "Your charm and diplomatic skills are heightened. This is an excellent day for negotiations, resolving conflicts, or simply making a positive impression on others.",
+                "Focus on learning and self-improvement. An insight gained today could unlock significant personal growth or open doors to new skills and knowledge.",
+                "The universe encourages acts of kindness. Helping someone, even in a small way, will ripple outwards, bringing unexpected positivity back to you. Pay attention to synchronicity.",
+                "Today calls for balance and harmony. Seek equilibrium between work and rest, social interaction and solitude. Mindfulness practices will be particularly beneficial.",
+                "A steady, persistent approach yields the best results now. Avoid rushing; focus on methodical progress in your tasks. Patience will be rewarded, especially with complex matters.",
+                "Pay attention to your dreams and intuition; they may hold subtle but important messages. Journaling or quiet reflection could reveal valuable self-understanding.",
+                "Routine tasks may feel more demanding, but completing them brings a sense of accomplishment. Find satisfaction in order and efficiency. Clear clutter, both physical and mental.",
+                "Observe the dynamics around you carefully before acting. A situation may be more complex than it first appears. Gather information and consider different perspectives.",
+                "Minor setbacks may test your patience today, especially concerning technology or travel. Take deep breaths and approach problems calmly. Flexibility is your ally.",
+                "Be mindful of potential misunderstandings in communication. Choose your words carefully and strive for clarity to avoid unnecessary friction. Listen more than you speak.",
+                "Guard your energy; you might feel more sensitive or easily drained than usual. Prioritize rest and avoid situations or people that deplete you. Set healthy boundaries.",
+                "Financial caution is advised. Double-check expenses and resist impulsive purchases. An unexpected cost might arise, so having a buffer is wise.",
+                "A past issue you thought resolved might resurface. Address it directly and honestly to prevent it from escalating. Don't shy away from difficult conversations.",
+                "Feeling restless or unfocused is possible today. Channel this energy constructively through physical activity or creative outlets rather than scattered efforts. Avoid making major decisions.",
+                "Be wary of gossip or misleading information. Trust reliable sources and your own judgment. Not everything you hear holds true; seek confirmation before reacting."
+            ];
+
+            // --- Event Listeners ---
+            getFortuneBtn.addEventListener('click', showForm);
+            userInfoForm.addEventListener('submit', handleFormSubmit);
+            resetBtn.addEventListener('click', resetView);
+
+            // --- Functions ---
+
+             function switchViews(hideElement, showElement) {
+                hideElement.classList.remove('visible');
+                hideElement.classList.add('hidden');
+
+                setTimeout(() => {
+                    if(showElement.id === 'user-info-form'){
+                       showElement.style.display = 'block';
+                    } else if (showElement.id === 'initial-view' || showElement.id === 'fortune-display') {
+                         showElement.style.display = 'flex';
+                    }
+                     void showElement.offsetWidth;
+                    showElement.classList.remove('hidden');
+                    showElement.classList.add('visible');
+                    if (showElement.id === 'user-info-form') {
+                       setTimeout(() => firstNameInput.focus({ preventScroll: true }), 50);
+                    }
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }, 400);
+             }
+
+            function showForm() {
+                switchViews(initialView, userInfoForm);
+            }
+
+            function handleFormSubmit(event) {
+                event.preventDefault();
+                if (!userInfoForm.checkValidity()) {
+                    userInfoForm.reportValidity();
+                    return;
+                }
+
+                const firstName = firstNameInput.value.trim();
+                const lastName = lastNameInput.value.trim();
+                const dob = dobInput.value;
+                // 6. Update localStorage key prefix
+                const storageKey = `deyli-${firstName.toLowerCase()}-${lastName.toLowerCase()}-${dob}-${todayString}`;
+                let fortuneData;
+                const storedData = localStorage.getItem(storageKey);
+
+                if (storedData) {
+                    try {
+                        fortuneData = JSON.parse(storedData);
+                        if (!fortuneData.fortuneText || !fortuneData.luckyNumber || typeof fortuneData.luckStars === 'undefined') {
+                            console.warn("Stored data invalid, regenerating.");
+                            throw new Error("Invalid stored data structure");
+                        }
+                         console.log("Fortune found in localStorage!"); // 7. Optional log update
+                    } catch (e) {
+                         console.error("Error parsing stored data or invalid structure, regenerating.", e);
+                         fortuneData = generateFortuneData(`${firstName}${lastName}${dob}${todayString}`);
+                         localStorage.setItem(storageKey, JSON.stringify(fortuneData));
+                    }
+                } else {
+                    console.log("Generating new fortune and storing..."); // 7. Optional log update
+                    fortuneData = generateFortuneData(`${firstName}${lastName}${dob}${todayString}`);
+                    localStorage.setItem(storageKey, JSON.stringify(fortuneData));
+                }
+
+                displayFortune(firstName, fortuneData);
+                switchViews(userInfoForm, fortuneDisplay);
+            }
+
+            function displayFortune(name, data) {
+                fortuneTextEl.textContent = `${name}, ${data.fortuneText}`;
+                luckyNumberEl.textContent = data.luckyNumber;
+                const filledStar = '★';
+                const emptyStar = `<span class="empty-star">☆</span>`;
+                const starCount = typeof data.luckStars === 'number' ? data.luckStars : 0;
+                luckMeterSpan.innerHTML = filledStar.repeat(starCount) + emptyStar.repeat(5 - starCount);
+            }
+
+            function resetView() {
+                switchViews(fortuneDisplay, initialView);
+                fortuneTextEl.textContent = "Your fortune awaits...";
+                luckyNumberEl.textContent = "?";
+                luckMeterSpan.innerHTML = `<span class="empty-star">☆</span>`.repeat(5);
+            }
+
+            function simpleHash(str) {
+                let hash = 0;
+                for (let i = 0; i < str.length; i++) {
+                    const char = str.charCodeAt(i);
+                    hash = char + (hash << 6) + (hash << 16) - hash;
+                    hash = hash & hash;
+                }
+                return Math.abs(hash);
+            }
+
+            function generateFortuneData(seedString) {
+                const hash = simpleHash(seedString);
+                const fortuneIndex = hash % fortunes.length;
+                const fortuneText = fortunes[fortuneIndex];
+                const luckyNumber = (hash % 100) + 1;
+                const raritySeed = simpleHash(seedString + "luck_v2");
+                const randomValue = (raritySeed / 2**31);
+                let stars = 0;
+                if (randomValue < 0.30) stars = (raritySeed % 2) + 1;
+                else if (randomValue < 0.75) stars = 3;
+                else if (randomValue < 0.95) stars = 4;
+                else stars = 5;
+                return { fortuneText: fortuneText, luckyNumber: luckyNumber, luckStars: stars };
+            }
+
+            // --- Initial View Setup ---
+            initialView.classList.remove('hidden');
+            initialView.classList.add('visible');
+            initialView.style.display = 'flex';
+            userInfoForm.classList.add('hidden');
+            userInfoForm.classList.remove('visible');
+            userInfoForm.style.display = 'none';
+            fortuneDisplay.classList.add('hidden');
+            fortuneDisplay.classList.remove('visible');
+            fortuneDisplay.style.display = 'none';
+
+            // --- Cleanup Old LocalStorage Data ---
+            cleanupOldFortunes();
+
+             function cleanupOldFortunes() {
+                 const keys = Object.keys(localStorage);
+                 keys.forEach(key => {
+                     // 6. Update check for old key prefix
+                     if (key.startsWith('deyli-') || key.startsWith('yourzin-')) { // Check for both new and old prefixes during transition
+                         const keyParts = key.split('-');
+                         if (keyParts.length > 3) {
+                             const potentialDateString = keyParts.slice(-4).join(' ');
+                             const storedDate = new Date(potentialDateString);
+                             if (!isNaN(storedDate.getTime()) && storedDate.toDateString() !== todayString) {
+                                 console.log(`Removing old fortune data for key: ${key}`);
+                                 localStorage.removeItem(key);
+                             }
+                         }
+                     }
+                 });
+             }
+
+        });
+        /* --- End JavaScript --- */
+    </script>
+
+</body>
+</html>
